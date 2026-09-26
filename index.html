@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Rust サーバーの未鑑定の遺物で手に入る武器・防具・ツールの効果まとめ（プレイヤー向け）">
+<meta property="og:title" content="遺物装備ガイド">
+<meta property="og:description" content="未鑑定の遺物で手に入る武器・防具・ツールの効果まとめ">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#14181a">
+<title>遺物装備ガイド</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  html { color-scheme: light dark; }
+  body { margin: 0; }
+  img { max-width: 100%; }
+</style>
+<style>
+  :root {
+    --ink: #15191b;
+    --ink-soft: #4a545a;
+    --ink-faint: #74818a;
+    --ground: #eef1f0;
+    --panel: #ffffff;
+    --line: #d6dcda;
+    --line-soft: #e6eae8;
+    --gold: #b07d14;
+    --gold-bg: #fbf1d8;
+    --gold-line: #e6cb8c;
+    --t1: #8b9299;
+    --t2: #2f9e3c;
+    --t3: #1f7fd6;
+    --t4: #8c3ee0;
+    --t5: #d4801a;
+    --jp: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", system-ui, sans-serif;
+    --cond: "Roboto Condensed", "Arial Narrow", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ink: #eef2f1;
+      --ink-soft: #b3bec4;
+      --ink-faint: #87949c;
+      --ground: #14181a;
+      --panel: #1c2124;
+      --line: #2e3639;
+      --line-soft: #262d30;
+      --gold: #f0ba3b;
+      --gold-bg: #2a2417;
+      --gold-line: #5b4a1e;
+      --t1: #c2c9cf;
+      --t2: #4cd959;
+      --t3: #55aaff;
+      --t4: #b467ff;
+      --t5: #ffa93f;
+    }
+  }
+  :root[data-theme="dark"] {
+    --ink: #eef2f1;
+    --ink-soft: #b3bec4;
+    --ink-faint: #87949c;
+    --ground: #14181a;
+    --panel: #1c2124;
+    --line: #2e3639;
+    --line-soft: #262d30;
+    --gold: #f0ba3b;
+    --gold-bg: #2a2417;
+    --gold-line: #5b4a1e;
+    --t1: #c2c9cf;
+    --t2: #4cd959;
+    --t3: #55aaff;
+    --t4: #b467ff;
+    --t5: #ffa93f;
+  }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--jp);
+    font-size: 15px;
+    line-height: 1.75;
+    padding-inline: 18px;
+    padding-block: 0 56px;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; }
+
+  /* --- header --- */
+  header { padding-block: 40px 22px; }
+  .eyebrow {
+    font-family: var(--cond);
+    font-size: 13px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0 0 10px;
+  }
+  h1 {
+    font-size: clamp(30px, 6vw, 42px);
+    line-height: 1.2;
+    margin: 0 0 14px;
+    font-weight: 700;
+    letter-spacing: .01em;
+    text-wrap: balance;
+  }
+  .lead { margin: 0; max-width: 40em; color: var(--ink-soft); }
+  .meta {
+    font-family: var(--cond);
+    font-size: 13px;
+    color: var(--ink-faint);
+    margin-top: 16px;
+    letter-spacing: .04em;
+  }
+
+  /* --- nav --- */
+  nav {
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 5;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 14px;
+    padding-block: 10px;
+    margin-bottom: 26px;
+    background: color-mix(in srgb, var(--ground) 92%, transparent);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  nav a {
+    font-family: var(--cond);
+    font-size: 14px;
+    letter-spacing: .06em;
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+  nav a:hover, nav a:focus-visible { color: var(--ink); border-bottom-color: var(--gold); }
+
+  section { margin-bottom: 44px; }
+  h2 {
+    font-size: 21px;
+    margin: 0 0 6px;
+    font-weight: 700;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  h2 .num {
+    font-family: var(--cond);
+    font-size: 14px;
+    letter-spacing: .12em;
+    color: var(--gold);
+  }
+  h3 {
+    font-family: var(--cond);
+    font-size: 14px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 26px 0 8px;
+    font-weight: 700;
+  }
+  .note { color: var(--ink-soft); font-size: 14px; margin: 10px 0 0; }
+  .note strong { color: var(--ink); }
+
+  /* --- tiers --- */
+  .tiers { display: grid; gap: 8px; margin-top: 14px; }
+  .tier {
+    display: grid;
+    grid-template-columns: 6px 118px 1fr;
+    align-items: center;
+    gap: 14px;
+    background: var(--panel);
+    border: 1px solid var(--line-soft);
+    border-radius: 3px;
+    padding: 10px 14px 10px 0;
+    overflow: hidden;
+  }
+  .tier i { display: block; height: 100%; min-height: 34px; background: var(--tc); }
+  .tier b {
+    font-family: var(--cond);
+    font-size: 16px;
+    letter-spacing: .1em;
+    color: var(--tc);
+  }
+  .tier span { color: var(--ink-soft); font-size: 14px; }
+
+  /* --- effect rows --- */
+  .table { margin-top: 12px; border-top: 1px solid var(--line); }
+  .row, .head {
+    display: grid;
+    grid-template-columns: 9.5em 1fr 7.5em;
+    gap: 4px 18px;
+    padding: 11px 2px;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .armor .row, .armor .head { grid-template-columns: 9.5em 1fr 6em 6em; }
+  .head {
+    font-family: var(--cond);
+    font-size: 13px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    border-bottom-color: var(--line);
+    padding-block: 6px;
+  }
+  .row b { font-weight: 700; }
+  .row .d { color: var(--ink-soft); }
+  .row .v {
+    font-family: var(--cond);
+    font-variant-numeric: tabular-nums;
+    font-size: 16px;
+    color: var(--ink);
+  }
+  .row .k { display: none; font-family: var(--cond); font-size: 12px; letter-spacing: .08em; color: var(--ink-faint); margin-right: 6px; }
+
+  /* --- special block --- */
+  .special {
+    margin-top: 14px;
+    background: var(--gold-bg);
+    border: 1px solid var(--gold-line);
+    border-radius: 3px;
+    padding: 14px 16px;
+  }
+  .special .cap {
+    font-family: var(--cond);
+    font-size: 13px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 0 0 8px;
+    font-weight: 700;
+  }
+  .special dl { margin: 0; display: grid; gap: 6px; }
+  .special div { display: grid; grid-template-columns: 8.5em 1fr; gap: 4px 14px; }
+  .special dt { font-weight: 700; }
+  .special dd { margin: 0; color: var(--ink-soft); }
+
+  ul.plain { margin: 12px 0 0; padding-left: 1.1em; }
+  ul.plain li { margin-bottom: 6px; color: var(--ink-soft); }
+  ul.plain li strong { color: var(--ink); }
+
+  .legend { display: grid; gap: 8px; margin-top: 12px; }
+  .legend div { display: grid; grid-template-columns: 11em 1fr; gap: 4px 14px; }
+  .legend code {
+    font-family: var(--cond);
+    font-size: 15px;
+    letter-spacing: .04em;
+    color: var(--gold);
+  }
+  .legend span { color: var(--ink-soft); }
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding-top: 16px;
+    color: var(--ink-faint);
+    font-size: 13px;
+  }
+
+  @media (max-width: 620px) {
+    .head { display: none; }
+    .row, .armor .row { grid-template-columns: 1fr; gap: 2px; padding-block: 13px; }
+    .row .k { display: inline; }
+    .tier { grid-template-columns: 6px 1fr; row-gap: 2px; padding-bottom: 12px; }
+    .tier span { grid-column: 2; }
+    .special div, .legend div { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <p class="eyebrow">Rust / 未鑑定の遺物</p>
+    <h1>遺物装備ガイド</h1>
+    <p class="lead">未鑑定の遺物を開けると、特別な効果（OP）が付いた武器・防具・ツールが手に入ります。同じ武器でも中身は毎回違います。何が付くのか、どう確認するのかをまとめました。</p>
+    <p class="meta">RelicAffix v0.7.0 ／ 2026-09-27</p>
+  </header>
+
+  <nav>
+    <a href="#tier">レア度</a>
+    <a href="#check">確認方法</a>
+    <a href="#weapon">武器</a>
+    <a href="#armor">防具</a>
+    <a href="#tool">ツール</a>
+    <a href="#rules">注意点</a>
+  </nav>
+
+  <section id="tier">
+    <h2><span class="num">01</span>レア度は5段階</h2>
+    <p class="note">アイテム名の前に付く名前がレア度です。<strong>付いている効果の数と強さ</strong>で決まります。インベントリでは、効果が付いたアイテムのスロットの後ろがこの色で光ります。</p>
+    <div class="tiers">
+      <div class="tier" style="--tc: var(--t1)"><i></i><b>COMMON</b><span>効果1つ、値は控えめ</span></div>
+      <div class="tier" style="--tc: var(--t2)"><i></i><b>UNCOMMON</b><span>効果1〜2つ</span></div>
+      <div class="tier" style="--tc: var(--t3)"><i></i><b>RARE</b><span>効果2〜3つ、値も良くなってくる</span></div>
+      <div class="tier" style="--tc: var(--t4)"><i></i><b>EPIC</b><span>効果3つ前後、高い値が混じる</span></div>
+      <div class="tier" style="--tc: var(--t5)"><i></i><b>LEGENDARY</b><span>効果が多く値も高い。特別な効果（✦）が付くことも</span></div>
+    </div>
+  </section>
+
+  <section id="check">
+    <h2><span class="num">02</span>効果の確認</h2>
+    <div class="table">
+      <div class="head"><div>やりかた</div><div>内容</div></div>
+      <div class="row" style="grid-template-columns: 9.5em 1fr"><div><b>スロットの i ボタン</b></div><div class="d">アイテムの右上。押すと詳細ウィンドウが開く</div></div>
+      <div class="row" style="grid-template-columns: 9.5em 1fr"><div><b>/rx inspect</b></div><div class="d">手に持っているアイテムの詳細</div></div>
+      <div class="row" style="grid-template-columns: 9.5em 1fr"><div><b>/rx wear</b></div><div class="d">今着ている防具の合計値</div></div>
+    </div>
+    <h3>詳細ウィンドウの見かた</h3>
+    <ul class="plain">
+      <li><strong>バー</strong> … その効果が下限〜上限のどのあたりか。右に伸びているほど当たり</li>
+      <li><strong>品質 ○○%</strong> … 同じことを数字で</li>
+      <li><strong>MAX ROLL</strong> … ほぼ上限を引いた、いちばん良い状態</li>
+      <li><strong>ティア値</strong> … レア度を決めている点数</li>
+    </ul>
+  </section>
+
+  <section id="weapon">
+    <h2><span class="num">03</span>武器</h2>
+    <div class="table">
+      <div class="head"><div>効果</div><div>何が起きる</div><div>最大</div></div>
+      <div class="row"><div><b>攻撃力</b></div><div class="d">ダメージが上がる</div><div class="v"><span class="k">最大</span>+30%</div></div>
+      <div class="row"><div><b>会心率</b></div><div class="d">この確率でダメージが1.5倍になる</div><div class="v"><span class="k">最大</span>20%</div></div>
+      <div class="row"><div><b>急所強化</b></div><div class="d">ヘッドショットのダメージが上がる（銃・弓）</div><div class="v"><span class="k">最大</span>+2.5%</div></div>
+      <div class="row"><div><b>大容量</b></div><div class="d">装弾数が増える（銃）</div><div class="v"><span class="k">最大</span>+50%</div></div>
+      <div class="row"><div><b>耐久強化</b></div><div class="d">壊れにくくなる（最大耐久が増える）</div><div class="v"><span class="k">最大</span>2.5倍</div></div>
+    </div>
+    <div class="special">
+      <p class="cap">✦ 特別な効果 — 1つの装備に1つだけ</p>
+      <dl>
+        <div><dt>弾薬節約</dt><dd>20%の確率で弾を消費しない</dd></div>
+        <div><dt>処刑</dt><dd>体力が3割以下の相手へのダメージ +40%</dd></div>
+        <div><dt>連撃</dt><dd>同じ相手に当て続けるとダメージが少しずつ上がる（最大 +5%、3秒あけると戻る）</dd></div>
+      </dl>
+    </div>
+    <p class="note">ダメージの伸びは<strong>合計で2.5倍まで</strong>。ここから先は伸びません。武器には<strong>アタッチメント</strong>（サイト・サイレンサー・拡張マガジンなど）が最初から付いていることがあり、数が多いほどレア度も上がります。</p>
+  </section>
+
+  <section id="armor" class="armor">
+    <h2><span class="num">04</span>防具</h2>
+    <p class="note">値は<strong>1部位ごと</strong>。着ている分だけ足し算されますが、合計には上限があります。</p>
+    <div class="table">
+      <div class="head"><div>効果</div><div>何が起きる</div><div>1部位</div><div>合計上限</div></div>
+      <div class="row"><div><b>防御</b></div><div class="d">殴り・斬り・刺し・銃弾・矢・噛みつきのダメージを減らす</div><div class="v"><span class="k">1部位</span>8%</div><div class="v"><span class="k">合計</span>30%</div></div>
+      <div class="row"><div><b>自然回復</b></div><div class="d">5秒ごとに体力が回復（被弾すると5秒止まる）</div><div class="v"><span class="k">1部位</span>3HP</div><div class="v"><span class="k">合計</span>3HP</div></div>
+      <div class="row"><div><b>耐爆</b></div><div class="d">爆発ダメージを減らす</div><div class="v"><span class="k">1部位</span>16%</div><div class="v"><span class="k">合計</span>40%</div></div>
+      <div class="row"><div><b>放射線防護</b></div><div class="d">放射線に強くなる</div><div class="v"><span class="k">1部位</span>+8</div><div class="v"><span class="k">合計</span>+25</div></div>
+      <div class="row"><div><b>耐火</b></div><div class="d">炎・熱のダメージを減らす</div><div class="v"><span class="k">1部位</span>20%</div><div class="v"><span class="k">合計</span>50%</div></div>
+      <div class="row"><div><b>止血</b></div><div class="d">出血のダメージを減らす</div><div class="v"><span class="k">1部位</span>30%</div><div class="v"><span class="k">合計</span>60%</div></div>
+      <div class="row"><div><b>着地</b></div><div class="d">落下ダメージを減らす</div><div class="v"><span class="k">1部位</span>30%</div><div class="v"><span class="k">合計</span>60%</div></div>
+      <div class="row"><div><b>耐久強化</b></div><div class="d">壊れにくくなる</div><div class="v"><span class="k">1部位</span>2.5倍</div><div class="v"><span class="k">合計</span>部位ごと</div></div>
+    </div>
+    <div class="special">
+      <p class="cap">✦ 特別な効果 — 1つの装備に1つだけ</p>
+      <dl>
+        <div><dt>不屈</dt><dd>死ぬ／ダウンするダメージを、体力1で1回だけ耐える（10分に1回）</dd></div>
+        <div><dt>緊急治療</dt><dd>体力が25%以下になると体力が30回復（5分に1回）</dd></div>
+        <div><dt>障壁</dt><dd>10秒間ダメージを受けていないと、次の1発を50%軽減</dd></div>
+      </dl>
+    </div>
+    <p class="note">同じ特別な効果を2部位に着ても、効果は重なりません。</p>
+  </section>
+
+  <section id="tool">
+    <h2><span class="num">05</span>ツール</h2>
+    <p class="note">対象は採取用の斧・つるはし・チェーンソー・ジャックハンマーなど。ハンマーや建築ツールには付きません。</p>
+    <div class="table">
+      <div class="head"><div>効果</div><div>何が起きる</div><div>最大</div></div>
+      <div class="row"><div><b>採取量</b></div><div class="d">1回の採取で採れる量が増える</div><div class="v"><span class="k">最大</span>+75%</div></div>
+      <div class="row"><div><b>掘り出し物</b></div><div class="d">この確率で追加の資源が出る（金属鉱石→HQM、石→金属鉱石など）</div><div class="v"><span class="k">最大</span>15%</div></div>
+      <div class="row"><div><b>仕上げボーナス</b></div><div class="d">木や鉱石を採り切ったときのボーナスが増える</div><div class="v"><span class="k">最大</span>+100%</div></div>
+      <div class="row"><div><b>拾い上手</b></div><div class="d">地面の資源（木の枝・石・キノコなど）を拾う数が増える</div><div class="v"><span class="k">最大</span>+100%</div></div>
+      <div class="row"><div><b>耐久強化</b></div><div class="d">壊れにくくなる</div><div class="v"><span class="k">最大</span>2.5倍</div></div>
+    </div>
+    <div class="special">
+      <p class="cap">✦ 特別な効果 — 1つの装備に1つだけ</p>
+      <dl>
+        <div><dt>一撃採掘</dt><dd>15%の確率で鉱石を1回で採り切る</dd></div>
+        <div><dt>連鎖伐採</dt><dd>15%の確率で周りの木も一緒に倒れる（資源も入る）</dd></div>
+        <div><dt>豊作</dt><dd>10%の確率で1回の採取量が2倍</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section id="rules">
+    <h2><span class="num">06</span>覚えておきたいこと</h2>
+    <ul class="plain">
+      <li>効果は<strong>アイテムに付いています</strong>。誰かに渡しても、箱に入れても、そのまま残ります。</li>
+      <li><strong>プレイヤー同士の戦闘では効果は働きません</strong>（ダメージも軽減も通常どおり）。壊れにくさは常に効きます。</li>
+      <li>未鑑定の遺物は<strong>重ねられません</strong>。開けるには持ち物に入れて「Unwrap」。</li>
+      <li>鑑定中に別の遺物は開けられません。<strong>負傷中も開けられません</strong>。</li>
+      <li>鑑定の演出で「?」が消えた瞬間に中身が手に入ります。持ち物が満杯なら足元に落ちます。</li>
+      <li>画面が残ってしまったときは <strong>/relic close</strong> で閉じられます。</li>
+    </ul>
+    <h3>演出中に出る記号</h3>
+    <div class="legend">
+      <div><code>★ レア度 ★</code><span>引いたレア度</span></div>
+      <div><code>◆ 効果名 +○○%</code><span>付いている効果とその値</span></div>
+      <div><code>✦ 特殊OP</code><span>特別な効果。付いたときだけ出る</span></div>
+      <div><code>MAX ROLL</code><span>その効果がほぼ上限。かなりの当たり</span></div>
+    </div>
+  </section>
+
+  <footer>
+    数値はサーバーの設定によって変わることがあります。分からないことがあれば運営に聞いてください。
+  </footer>
+</div>
+</body>
+</html>
