@@ -213,6 +213,17 @@
   }
   .row .k { display: none; font-family: var(--cond); font-size: 12px; letter-spacing: .08em; color: var(--ink-faint); margin-right: 6px; }
 
+  /* --- tier tables --- */
+  .scroll { overflow-x: auto; margin-top: 12px; }
+  table.tbl { border-collapse: collapse; min-width: 660px; width: 100%; font-size: 14px; }
+  table.tbl th, table.tbl td { border-bottom: 1px solid var(--line-soft); padding: 9px 10px; text-align: left; white-space: nowrap; }
+  table.tbl thead th { border-bottom-color: var(--line); font-family: var(--cond); font-size: 12px; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-faint); }
+  table.tbl td:first-child { font-weight: 700; }
+  table.tbl td.n { white-space: normal; color: var(--ink-soft); min-width: 15em; }
+  table.tbl td.v { font-family: var(--cond); font-variant-numeric: tabular-nums; }
+  table.tbl th.c1 { color: var(--t1); } table.tbl th.c2 { color: var(--t2); } table.tbl th.c3 { color: var(--t3); }
+  table.tbl th.c4 { color: var(--t4); } table.tbl th.c5 { color: var(--t5); }
+
   /* --- special block --- */
   .special {
     margin-top: 14px;
@@ -272,7 +283,7 @@
     <p class="eyebrow">Rust / 未鑑定の遺物</p>
     <h1>遺物装備ガイド</h1>
     <p class="lead">未鑑定の遺物を開けると、特別な効果（OP）が付いた武器・防具・ツールが手に入ります。同じ武器でも中身は毎回違います。何が付くのか、どう確認するのかをまとめました。</p>
-    <p class="meta">RelicAffix v0.7.0 ／ 2026-09-27</p>
+    <p class="meta">RelicAffix v1.0.0 ／ 2026-10-12</p>
   </header>
 
   <nav>
@@ -286,15 +297,22 @@
 
   <section id="tier">
     <h2><span class="num">01</span>レア度は5段階</h2>
-    <p class="note">アイテム名の前に付く名前がレア度です。<strong>付いている効果の数と強さ</strong>で決まります。インベントリでは、効果が付いたアイテムのスロットの後ろがこの色で光ります。</p>
-    <div class="tiers">
-      <div class="tier" style="--tc: var(--t1)"><i></i><b>COMMON</b><span>効果1つ、値は控えめ</span></div>
-      <div class="tier" style="--tc: var(--t2)"><i></i><b>UNCOMMON</b><span>効果1〜2つ</span></div>
-      <div class="tier" style="--tc: var(--t3)"><i></i><b>RARE</b><span>効果2〜3つ、値も良くなってくる</span></div>
-      <div class="tier" style="--tc: var(--t4)"><i></i><b>EPIC</b><span>効果3つ前後、高い値が混じる</span></div>
-      <div class="tier" style="--tc: var(--t5)"><i></i><b>LEGENDARY</b><span>効果が多く値も高い。特別な効果（✦）が付くことも</span></div>
+    <p class="note">遺物を開けると<strong>最初にレア度が決まり</strong>、そのレア度で「付く効果の数」と「効果の強さの幅」が決まります。インベントリでは、効果が付いたアイテムのスロットの後ろがこの色で光ります。</p>
+    <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>レア度</th><th>効果の数</th><th>アタッチメント（武器）</th><th>特別な効果</th></tr></thead>
+        <tbody>
+          <tr><td style="color: var(--t1)">COMMON</td><td class="v">1つ</td><td class="v">なし</td><td class="n">なし</td></tr>
+          <tr><td style="color: var(--t2)">UNCOMMON</td><td class="v">1〜2つ</td><td class="v">0〜1個</td><td class="n">なし</td></tr>
+          <tr><td style="color: var(--t3)">RARE</td><td class="v">2〜3つ</td><td class="v">1〜2個</td><td class="n">なし</td></tr>
+          <tr><td style="color: var(--t4)">EPIC</td><td class="v">2〜3つ</td><td class="v">2〜3個</td><td class="n">なし</td></tr>
+          <tr><td style="color: var(--t5)">LEGENDARY</td><td class="v">3〜4つ</td><td class="v">3〜4個</td><td class="n"><strong>必ず1つ</strong></td></tr>
+        </tbody>
+      </table>
     </div>
   </section>
+
+  <section id="check">  </section>
 
   <section id="check">
     <h2><span class="num">02</span>効果の確認</h2>
@@ -306,24 +324,31 @@
     </div>
     <h3>詳細ウィンドウの見かた</h3>
     <ul class="plain">
-      <li><strong>バー</strong> … その効果が下限〜上限のどのあたりか。右に伸びているほど当たり</li>
+      <li><strong>バー</strong> … そのレア度の幅の中でどのあたりを引いたか。右に伸びているほど当たり</li>
       <li><strong>品質 ○○%</strong> … 同じことを数字で</li>
-      <li><strong>MAX ROLL</strong> … ほぼ上限を引いた、いちばん良い状態</li>
-      <li><strong>ティア値</strong> … レア度を決めている点数</li>
+      <li><strong>MAX ROLL</strong> … そのレア度のほぼ上限。かなりの当たり</li>
+      <li><strong>固定</strong> … そのレア度では値が1つだけ（当たり外れなし）</li>
     </ul>
   </section>
 
   <section id="weapon">
     <h2><span class="num">03</span>武器</h2>
-    <div class="table">
-      <div class="head"><div>効果</div><div>何が起きる</div><div>最大</div></div>
-      <div class="row"><div><b>攻撃力</b></div><div class="d">ダメージが上がる</div><div class="v"><span class="k">最大</span>+30%</div></div>
-      <div class="row"><div><b>会心率</b></div><div class="d">この確率でダメージが1.5倍になる</div><div class="v"><span class="k">最大</span>20%</div></div>
-      <div class="row"><div><b>急所強化</b></div><div class="d">ヘッドショットのダメージが上がる（銃・弓）</div><div class="v"><span class="k">最大</span>+2.5%</div></div>
-      <div class="row"><div><b>大容量</b></div><div class="d">装弾数が増える（銃）</div><div class="v"><span class="k">最大</span>+50%</div></div>
-      <div class="row"><div><b>耐久強化</b></div><div class="d">壊れにくくなる（最大耐久が増える）</div><div class="v"><span class="k">最大</span>2.5倍</div></div>
+    <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>効果</th><th>何が起きる</th><th class="c1">Common</th><th class="c2">Uncommon</th><th class="c3">Rare</th><th class="c4">Epic</th><th class="c5">Legendary</th></tr></thead>
+        <tbody>
+          <tr><td>攻撃力</td><td class="n">ダメージが上がる</td><td class="v">+1〜10%</td><td class="v">+10〜15%</td><td class="v">+15〜20%</td><td class="v">+20〜25%</td><td class="v">+25〜30%</td></tr>
+          <tr><td>会心率</td><td class="n">この確率でダメージが1.5倍になる</td><td class="v">1〜5%</td><td class="v">5〜10%</td><td class="v">10〜15%</td><td class="v">15〜20%</td><td class="v">20〜25%</td></tr>
+          <tr><td>急所強化</td><td class="n">ヘッドショットのダメージが上がる（銃・弓）</td><td class="v">+1%</td><td class="v">+1〜1.3%</td><td class="v">+1.3〜1.4%</td><td class="v">+1.4〜1.5%</td><td class="v">+1.5〜2%</td></tr>
+          <tr><td>大容量</td><td class="n">装弾数が増える（銃）</td><td class="v">+1〜10%</td><td class="v">+10〜20%</td><td class="v">+20〜30%</td><td class="v">+30〜40%</td><td class="v">+40〜50%</td></tr>
+          <tr><td>耐久強化</td><td class="n">壊れにくくなる（最大耐久が増える）</td><td class="v">×1.3</td><td class="v">×1.3〜1.5</td><td class="v">×1.5〜2</td><td class="v">×2〜2.3</td><td class="v">×2.3〜2.5</td></tr>
+        </tbody>
+      </table>
     </div>
     <div class="special">
+      <p class="cap">✦ 特別な効果 — LEGENDARY のみ、必ず1つ</p>
+      <dl>
+        <div><dt>弾薬節約</dt>    <div class="special">
       <p class="cap">✦ 特別な効果 — 1つの装備に1つだけ</p>
       <dl>
         <div><dt>弾薬節約</dt><dd>20%の確率で弾を消費しない</dd></div>
@@ -331,24 +356,32 @@
         <div><dt>連撃</dt><dd>同じ相手に当て続けるとダメージが少しずつ上がる（最大 +5%、3秒あけると戻る）</dd></div>
       </dl>
     </div>
-    <p class="note">ダメージの伸びは<strong>合計で2.5倍まで</strong>。ここから先は伸びません。武器には<strong>アタッチメント</strong>（サイト・サイレンサー・拡張マガジンなど）が最初から付いていることがあり、数が多いほどレア度も上がります。</p>
+    <p class="note">ダメージの伸びは<strong>合計で2.5倍まで</strong>。ここから先は伸びません。武器には<strong>アタッチメント</strong>（サイト・サイレンサー・拡張マガジンなど）が最初から付いていることがあり、レア度が高いほど多く付きます。</p>
   </section>
 
   <section id="armor" class="armor">
     <h2><span class="num">04</span>防具</h2>
     <p class="note">値は<strong>1部位ごと</strong>。着ている分だけ足し算されますが、合計には上限があります。</p>
-    <div class="table">
-      <div class="head"><div>効果</div><div>何が起きる</div><div>1部位</div><div>合計上限</div></div>
-      <div class="row"><div><b>防御</b></div><div class="d">殴り・斬り・刺し・銃弾・矢・噛みつきのダメージを減らす</div><div class="v"><span class="k">1部位</span>8%</div><div class="v"><span class="k">合計</span>30%</div></div>
-      <div class="row"><div><b>自然回復</b></div><div class="d">5秒ごとに体力が回復（被弾すると5秒止まる）</div><div class="v"><span class="k">1部位</span>3HP</div><div class="v"><span class="k">合計</span>3HP</div></div>
-      <div class="row"><div><b>耐爆</b></div><div class="d">爆発ダメージを減らす</div><div class="v"><span class="k">1部位</span>16%</div><div class="v"><span class="k">合計</span>40%</div></div>
-      <div class="row"><div><b>放射線防護</b></div><div class="d">放射線に強くなる</div><div class="v"><span class="k">1部位</span>+8</div><div class="v"><span class="k">合計</span>+25</div></div>
-      <div class="row"><div><b>耐火</b></div><div class="d">炎・熱のダメージを減らす</div><div class="v"><span class="k">1部位</span>20%</div><div class="v"><span class="k">合計</span>50%</div></div>
-      <div class="row"><div><b>止血</b></div><div class="d">出血のダメージを減らす</div><div class="v"><span class="k">1部位</span>30%</div><div class="v"><span class="k">合計</span>60%</div></div>
-      <div class="row"><div><b>着地</b></div><div class="d">落下ダメージを減らす</div><div class="v"><span class="k">1部位</span>30%</div><div class="v"><span class="k">合計</span>60%</div></div>
-      <div class="row"><div><b>耐久強化</b></div><div class="d">壊れにくくなる</div><div class="v"><span class="k">1部位</span>2.5倍</div><div class="v"><span class="k">合計</span>部位ごと</div></div>
+    <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>効果</th><th>何が起きる</th><th class="c1">Common</th><th class="c2">Uncommon</th><th class="c3">Rare</th><th class="c4">Epic</th><th class="c5">Legendary</th><th>合計上限</th></tr></thead>
+        <tbody>
+          <tr><td>防御</td><td class="n">殴り・斬り・刺し・銃弾・矢・噛みつきのダメージを減らす</td><td class="v">1%</td><td class="v">1〜2%</td><td class="v">2〜3%</td><td class="v">3〜4%</td><td class="v">4〜5%</td><td class="v">30%</td></tr>
+          <tr><td>自然回復</td><td class="n">5秒ごとに体力が回復（被弾すると5秒止まる）</td><td class="v">—</td><td class="v">—</td><td class="v">—</td><td class="v">1HP</td><td class="v">1HP</td><td class="v">3HP</td></tr>
+          <tr><td>耐爆</td><td class="n">爆発ダメージを減らす</td><td class="v">3%</td><td class="v">3〜4%</td><td class="v">4〜5%</td><td class="v">5〜6%</td><td class="v">6〜8%</td><td class="v">40%</td></tr>
+          <tr><td>放射線防護</td><td class="n">放射線に強くなる</td><td class="v">+1</td><td class="v">+1〜2</td><td class="v">+2〜3</td><td class="v">+3〜4</td><td class="v">+4〜5</td><td class="v">+25</td></tr>
+          <tr><td>耐火</td><td class="n">炎・熱のダメージを減らす</td><td class="v">3%</td><td class="v">3〜4%</td><td class="v">4〜5%</td><td class="v">5〜6%</td><td class="v">6〜8%</td><td class="v">50%</td></tr>
+          <tr><td>止血</td><td class="n">出血のダメージを減らす</td><td class="v">3%</td><td class="v">3〜4%</td><td class="v">4〜6%</td><td class="v">6〜8%</td><td class="v">8〜10%</td><td class="v">60%</td></tr>
+          <tr><td>着地</td><td class="n">落下ダメージを減らす</td><td class="v">3%</td><td class="v">3〜5%</td><td class="v">5〜7%</td><td class="v">7〜10%</td><td class="v">10〜15%</td><td class="v">90%</td></tr>
+          <tr><td>耐久強化</td><td class="n">壊れにくくなる</td><td class="v">×1.3</td><td class="v">×1.3〜1.5</td><td class="v">×1.5〜2</td><td class="v">×2〜2.3</td><td class="v">×2.3〜2.5</td><td class="v">部位ごと</td></tr>
+        </tbody>
+      </table>
     </div>
+    <p class="note">自然回復は <strong>EPIC 以上の防具にしか付きません</strong>。</p>
     <div class="special">
+      <p class="cap">✦ 特別な効果 — LEGENDARY のみ、必ず1つ</p>
+      <dl>
+        <div><dt>不屈</dt>    <div class="special">
       <p class="cap">✦ 特別な効果 — 1つの装備に1つだけ</p>
       <dl>
         <div><dt>不屈</dt><dd>死ぬ／ダウンするダメージを、体力1で1回だけ耐える（10分に1回）</dd></div>
@@ -362,15 +395,22 @@
   <section id="tool">
     <h2><span class="num">05</span>ツール</h2>
     <p class="note">対象は採取用の斧・つるはし・チェーンソー・ジャックハンマーなど。ハンマーや建築ツールには付きません。</p>
-    <div class="table">
-      <div class="head"><div>効果</div><div>何が起きる</div><div>最大</div></div>
-      <div class="row"><div><b>採取量</b></div><div class="d">1回の採取で採れる量が増える</div><div class="v"><span class="k">最大</span>+75%</div></div>
-      <div class="row"><div><b>掘り出し物</b></div><div class="d">この確率で追加の資源が出る（金属鉱石→HQM、石→金属鉱石など）</div><div class="v"><span class="k">最大</span>15%</div></div>
-      <div class="row"><div><b>仕上げボーナス</b></div><div class="d">木や鉱石を採り切ったときのボーナスが増える</div><div class="v"><span class="k">最大</span>+100%</div></div>
-      <div class="row"><div><b>拾い上手</b></div><div class="d">地面の資源（木の枝・石・キノコなど）を拾う数が増える</div><div class="v"><span class="k">最大</span>+100%</div></div>
-      <div class="row"><div><b>耐久強化</b></div><div class="d">壊れにくくなる</div><div class="v"><span class="k">最大</span>2.5倍</div></div>
+    <div class="scroll">
+      <table class="tbl">
+        <thead><tr><th>効果</th><th>何が起きる</th><th class="c1">Common</th><th class="c2">Uncommon</th><th class="c3">Rare</th><th class="c4">Epic</th><th class="c5">Legendary</th></tr></thead>
+        <tbody>
+          <tr><td>採取量</td><td class="n">1回の採取で採れる量が増える</td><td class="v">+1〜10%</td><td class="v">+10〜20%</td><td class="v">+20〜30%</td><td class="v">+30〜40%</td><td class="v">+50〜100%</td></tr>
+          <tr><td>掘り出し物</td><td class="n">この確率で追加の資源が出る（金属鉱石→HQM、石→金属鉱石など）</td><td class="v">1〜3%</td><td class="v">3〜4%</td><td class="v">4〜5%</td><td class="v">5〜10%</td><td class="v">10〜15%</td></tr>
+          <tr><td>仕上げボーナス</td><td class="n">木や鉱石を採り切ったときのボーナスが増える</td><td class="v">+5〜10%</td><td class="v">+10〜15%</td><td class="v">+15〜20%</td><td class="v">+20〜50%</td><td class="v">+50〜100%</td></tr>
+          <tr><td>拾い上手</td><td class="n">地面の資源（木の枝・石・キノコなど）を拾う数が増える</td><td class="v">+1〜10%</td><td class="v">+10〜20%</td><td class="v">+20〜30%</td><td class="v">+30〜50%</td><td class="v">+50〜100%</td></tr>
+          <tr><td>耐久強化</td><td class="n">壊れにくくなる</td><td class="v">×1.3</td><td class="v">×1.3〜1.5</td><td class="v">×1.5〜2</td><td class="v">×2〜2.3</td><td class="v">×2.3〜2.5</td></tr>
+        </tbody>
+      </table>
     </div>
     <div class="special">
+      <p class="cap">✦ 特別な効果 — LEGENDARY のみ、必ず1つ</p>
+      <dl>
+        <div><dt>一撃採掘</dt>    <div class="special">
       <p class="cap">✦ 特別な効果 — 1つの装備に1つだけ</p>
       <dl>
         <div><dt>一撃採掘</dt><dd>15%の確率で鉱石を1回で採り切る</dd></div>
@@ -394,8 +434,8 @@
     <div class="legend">
       <div><code>★ レア度 ★</code><span>引いたレア度</span></div>
       <div><code>◆ 効果名 +○○%</code><span>付いている効果とその値</span></div>
-      <div><code>✦ 特殊OP</code><span>特別な効果。付いたときだけ出る</span></div>
-      <div><code>MAX ROLL</code><span>その効果がほぼ上限。かなりの当たり</span></div>
+      <div><code>✦ 特殊OP</code><span>特別な効果。LEGENDARY のときだけ出る</span></div>
+      <div><code>MAX ROLL</code><span>そのレア度のほぼ上限。かなりの当たり</span></div>
     </div>
   </section>
 
